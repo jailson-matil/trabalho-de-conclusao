@@ -3,7 +3,7 @@ name: '03 - Execução por Push'
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   inspecao-codigo:
