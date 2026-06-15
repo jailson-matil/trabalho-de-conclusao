@@ -2,8 +2,7 @@
   "name": "gestao-de-usuarios",
   "version": "1.0.0",
   "scripts": {
-    "test": "mocha test/**/*.js --reporter mocha-junit-reporter --reporter-options mochaFile=results.xml",
-    "lint": "eslint ."
+    "test": "mocha test/**/*.js --reporter mocha-junit-reporter --reporter-options mochaFile=results.xml"    
   },
   "devDependencies": {
     "eslint": "^10.5.0",
