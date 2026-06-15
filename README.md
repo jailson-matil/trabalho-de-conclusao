@@ -4,7 +4,7 @@
 
 Este projeto tem como objetivo demonstrar a implementação de uma pipeline de Integração Contínua (Continuous Integration - CI) utilizando GitHub Actions em um projeto Node.js com testes automatizados.
 
-A solução contempla diferentes formas de execução da pipeline, geração de relatórios de testes, armazenamento de artefatos e uma etapa de deploy simulado para demonstrar o fluxo completo de validação e entrega contínua.
+A solução contempla diferentes formas de execução da pipeline, geração de relatórios de testes, armazenamento de artefatos e uma etapa de deploy simulado para demonstrar o fluxo de validação e entrega contínua.
 
 ---
 
@@ -13,7 +13,6 @@ A solução contempla diferentes formas de execução da pipeline, geração de 
 * Node.js 22
 * Mocha
 * mocha-junit-reporter
-* ESLint
 * GitHub Actions
 * actions/upload-artifact
 * dorny/test-reporter
@@ -24,21 +23,23 @@ A solução contempla diferentes formas de execução da pipeline, geração de 
 
 ### Integração Contínua (CI)
 
-Integração Contínua (Continuous Integration - CI) é uma prática de desenvolvimento que consiste em integrar frequentemente alterações de código em um repositório compartilhado. A cada alteração realizada, processos automatizados são executados para validar a qualidade e o funcionamento da aplicação.
+Integração Contínua (Continuous Integration - CI) é uma prática de desenvolvimento que consiste em integrar frequentemente alterações de código em um repositório compartilhado.
 
-Os principais benefícios são:
+Sempre que uma alteração é realizada, processos automatizados são executados para verificar se a aplicação continua funcionando corretamente.
+
+Principais benefícios:
 
 * Detecção antecipada de falhas;
 * Redução de problemas de integração;
 * Maior confiabilidade do código;
 * Feedback rápido para os desenvolvedores;
-* Automatização das validações de qualidade.
+* Automatização da validação do software.
 
 ---
 
 ### GitHub Actions
 
-GitHub Actions é a plataforma de automação do GitHub que permite criar workflows para executar tarefas automaticamente, como inspeção de código, testes, geração de relatórios e implantação.
+GitHub Actions é a plataforma de automação do GitHub que permite criar workflows para executar tarefas automaticamente, como compilação, testes e implantação.
 
 Os workflows são definidos em arquivos YAML localizados na pasta:
 
@@ -90,31 +91,10 @@ Gatilho utilizado:
 ```yaml
 push:
   branches:
-    - master
+    - main
 ```
 
 Sempre que um commit é enviado para a branch principal, a pipeline é executada automaticamente.
-
----
-
-## Inspeção de Código
-
-A primeira etapa da pipeline consiste na inspeção estática do código utilizando ESLint.
-
-Comando executado:
-
-```bash
-npm run lint
-```
-
-Objetivos da inspeção:
-
-* Identificar erros de sintaxe;
-* Garantir padronização do código;
-* Detectar problemas antes da execução dos testes;
-* Melhorar a qualidade geral da aplicação.
-
-A etapa de testes somente é executada caso a inspeção seja concluída com sucesso.
 
 ---
 
@@ -128,23 +108,7 @@ Comando utilizado:
 npm test
 ```
 
-Os testes têm como objetivo validar o comportamento esperado da aplicação e garantir que alterações no código não introduzam falhas.
-
----
-
-## Dependência entre Jobs
-
-A pipeline foi estruturada utilizando múltiplos jobs e dependências através da propriedade `needs`.
-
-Fluxo implementado:
-
-1. Inspeção de Código (Lint)
-2. Testes Unitários
-3. Deploy Simulado
-
-A etapa seguinte somente é executada quando a etapa anterior é concluída com sucesso.
-
-Essa estratégia evita que código com falhas de qualidade ou testes reprovados avance para etapas posteriores.
+Os testes verificam se as funcionalidades da aplicação continuam funcionando conforme o esperado.
 
 ---
 
@@ -175,8 +139,7 @@ Benefícios:
 * Visualização dos testes executados;
 * Quantidade de testes aprovados;
 * Quantidade de testes reprovados;
-* Detalhamento das falhas encontradas;
-* Melhor acompanhamento da qualidade da aplicação.
+* Detalhamento das falhas encontradas.
 
 ---
 
@@ -196,19 +159,19 @@ Artefato gerado:
 relatorio-testes
 ```
 
-O armazenamento dos artefatos possibilita auditoria, rastreabilidade e análise posterior dos resultados.
+O armazenamento dos artefatos possibilita a consulta posterior dos resultados da execução.
 
 ---
 
 ## Deploy Simulado
 
-Após a aprovação das etapas de inspeção de código e testes automatizados, a pipeline executa uma etapa de deploy simulado.
+Após a execução bem-sucedida dos testes automatizados, a pipeline executa uma etapa de deploy simulado.
 
 Objetivos:
 
 * Demonstrar o conceito de Continuous Delivery (CD);
-* Validar o fluxo completo da pipeline;
-* Garantir que apenas código aprovado avance para implantação.
+* Representar uma etapa de implantação;
+* Garantir que apenas código validado avance para as etapas finais do processo.
 
 Nesta atividade foi utilizada uma simulação através do comando:
 
@@ -216,28 +179,27 @@ Nesta atividade foi utilizada uma simulação através do comando:
 echo "Deploy sendo realizado..."
 ```
 
-Em um ambiente real, essa etapa poderia realizar publicações em servidores, containers Docker, ambientes de homologação ou serviços em nuvem.
+Em cenários reais, essa etapa poderia realizar publicações em servidores, containers Docker, ambientes de homologação ou serviços em nuvem.
 
 ---
 
 ## Fluxo de Execução
 
 ```text
-Push na branch master
+Push / Schedule / Manual
           │
           ▼
-   Inspeção de Código
-       (ESLint)
+   Instala Dependências
           │
           ▼
-    Testes Unitários
+    Executa Testes
           │
           ▼
- Geração do results.xml
+ Gera results.xml
           │
-          ├──► Publicação do Relatório
+          ├──► Publica Relatório
           │
-          └──► Armazenamento do Artifact
+          └──► Salva Artifact
           │
           ▼
     Deploy Simulado
