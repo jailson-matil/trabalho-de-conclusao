@@ -1,4 +1,4 @@
-name: Execução Agendada de Testes
+name: '02 - Execução Agendada de Testes'
 
 on:
   push:
