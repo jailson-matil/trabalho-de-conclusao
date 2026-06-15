@@ -1,0 +1,41 @@
+
+
+# nome da pipeline
+name: '01 - Execução Manual de Testes'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar testes
+        run: npm test
+
+      - name: Publicar relatório de testes
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Testes Automatizados
+          path: results.xml
+          reporter: java-junit
+
+      - name: Armazenar artefatos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: relatorio-testes
+          path: results.xml
